@@ -75,8 +75,8 @@ class Explainer():
         Raises:
             TypeError: If the prompt is not a string.
         """
-        inputs=self.tokenizer.encode(prompt, return_tensors='pt', max_length=1024, truncation=True)
-        output = self.model.generate(inputs, min_length=256, max_length=512)
+        inputs=self.tokenizer.encode(prompt, return_tensors='pt', max_length=self.tokenizer.model_max_length, truncation=True)
+        output = self.model.generate(inputs, min_length=256, max_length=self.tokenizer.model_max_length)
         return self.tokenizer.decode(output[0], skip_special_tokens=True)
 
     def brief(self, github_url: str, branch: str = "main") -> dict:
