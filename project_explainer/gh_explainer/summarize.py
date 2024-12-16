@@ -8,6 +8,7 @@ from gh_processor import (download_github_repo,
                                remove_images_from_markdown,
                                remove_links_from_markdown)
 import os
+from git import rmtree
 from jinja2 import Template
 
 
@@ -101,6 +102,10 @@ class Explainer():
         prompt = {"prompt": project_description}
         prepared_prompt = self._fill_template(self.brief_prompt_template, prompt)
         summary=self._model_gen(prepared_prompt)
+
+        # Delete the repo
+        rmtree(repo_path)
+
         return {"prompt": prompt, "prepared_prompt": prepared_prompt, "summary": str(summary)}
     
     def outline(self, github_url: str, branch: str = "main") -> dict:
